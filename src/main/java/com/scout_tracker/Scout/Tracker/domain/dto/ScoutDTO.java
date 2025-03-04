@@ -11,8 +11,10 @@ import java.util.List;
 public class ScoutDTO {
 
     private Long id;
-    private String name;
+    private String scoutName;
     private String email;
+
     private List<String> playerNames;
+
     private List<String> observationDescriptions;
 }

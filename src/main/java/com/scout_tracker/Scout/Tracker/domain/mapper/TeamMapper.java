@@ -2,13 +2,29 @@ package com.scout_tracker.Scout.Tracker.domain.mapper;
 
 import com.scout_tracker.Scout.Tracker.domain.dto.TeamDTO;
 import com.scout_tracker.Scout.Tracker.domain.model.Team;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface TeamMapper {
+@Component
+public class TeamMapper {
 
-    TeamMapper INSTANCE = Mappers.getMapper(TeamMapper.class);
+    public TeamDTO toDTO(Team team) {
+        TeamDTO dto = new TeamDTO();
 
-    TeamDTO teamToTeamDTO(Team team);
+        dto.setId(team.getId());
+        dto.setTeamName(team.getTeamName());
+        dto.setTeamLeague(team.getTeamLeague());
+        dto.setTeamCountry(team.getTeamCountry());
+
+        return dto;
+    }
+
+    public Team toEntity(TeamDTO dto) {
+        Team team = new Team();
+
+        team.setTeamName(dto.getTeamName());
+        team.setTeamLeague(dto.getTeamLeague());
+        team.setTeamCountry(dto.getTeamCountry());
+
+        return team;
+    }
 }

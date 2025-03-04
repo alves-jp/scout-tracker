@@ -2,13 +2,31 @@ package com.scout_tracker.Scout.Tracker.domain.mapper;
 
 import com.scout_tracker.Scout.Tracker.domain.dto.ScoutObservationDTO;
 import com.scout_tracker.Scout.Tracker.domain.model.ScoutObservation;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface ScoutObservationMapper {
+import java.time.LocalDateTime;
 
-    ScoutObservationMapper INSTANCE = Mappers.getMapper(ScoutObservationMapper.class);
+@Component
+public class ScoutObservationMapper {
 
-    ScoutObservationDTO scoutObservationToScoutObservationDTO(ScoutObservation scoutObservation);
+    public ScoutObservationDTO toDTO(ScoutObservation observation) {
+        ScoutObservationDTO dto = new ScoutObservationDTO();
+
+        dto.setId(observation.getId());
+        dto.setObservation(observation.getObservation());
+        dto.setObservationDate(String.valueOf(observation.getObservationDate()));
+        dto.setPlayerId(observation.getPlayer().getId());
+        dto.setScoutId(observation.getScout().getId());
+
+        return dto;
+    }
+
+    public ScoutObservation toEntity(ScoutObservationDTO dto) {
+        ScoutObservation observation = new ScoutObservation();
+
+        observation.setObservation(dto.getObservation());
+        observation.setObservationDate(LocalDateTime.parse(dto.getObservationDate()));
+
+        return observation;
+    }
 }

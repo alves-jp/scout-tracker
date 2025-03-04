@@ -20,7 +20,7 @@ public class Scout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String scoutName;
     private String email;
 
     @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)

@@ -2,13 +2,27 @@ package com.scout_tracker.Scout.Tracker.domain.mapper;
 
 import com.scout_tracker.Scout.Tracker.domain.dto.CountryDTO;
 import com.scout_tracker.Scout.Tracker.domain.model.Country;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface CountryMapper {
+@Component
+public class CountryMapper {
 
-    CountryMapper INSTANCE = Mappers.getMapper(CountryMapper.class);
+    public CountryDTO toDTO(Country country) {
+        CountryDTO dto = new CountryDTO();
 
-    CountryDTO countryToCountryDTO(Country country);
+        dto.setId(country.getId());
+        dto.setCountryName(country.getCountryName());
+        dto.setCountryContinent(country.getCountryContinent());
+
+        return dto;
+    }
+
+    public Country toEntity(CountryDTO dto) {
+        Country country = new Country();
+
+        country.setCountryName(dto.getCountryName());
+        country.setCountryContinent(dto.getCountryContinent());
+
+        return country;
+    }
 }
