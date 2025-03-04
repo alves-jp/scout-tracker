@@ -23,16 +23,19 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public PlayerDTO getPlayerById(@PathVariable Long id) {
         return playerService.getPlayerById(id);
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<PlayerDTO> getAllPlayers() {
         return playerService.getAllPlayers();
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public PlayerDTO updatePlayer(@PathVariable Long id, @RequestBody PlayerDTO playerDTO) {
         return playerService.updatePlayer(id, playerDTO);
     }
