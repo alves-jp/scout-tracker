@@ -1,6 +1,5 @@
 package com.scout_tracker.domain.model;
 
-import io.micrometer.observation.Observation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +26,5 @@ public class Scout {
     private List<Player> players;
 
     @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)
-    private List<Observation> observations;
+    private List<ScoutObservation> observations;
 }
-

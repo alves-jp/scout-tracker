@@ -44,5 +44,9 @@ public class Player {
     private String playerPosition;
     private int jerseyNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "scout_id")
+    private Scout scout;
+
 
 }
