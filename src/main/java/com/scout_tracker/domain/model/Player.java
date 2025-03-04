@@ -1,12 +1,12 @@
 package com.scout_tracker.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Entity
@@ -46,7 +46,6 @@ public class Player {
 
     @ManyToOne
     @JoinColumn(name = "scout_id")
+    @JsonIgnore
     private Scout scout;
-
-
 }

@@ -34,6 +34,12 @@ public class PlayerController {
         return playerService.getAllPlayers();
     }
 
+    @GetMapping("/scout/{scoutId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByScout(@PathVariable Long scoutId) {
+        return playerService.getPlayersByScoutId(scoutId);
+    }
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PlayerDTO updatePlayer(@PathVariable Long id, @RequestBody PlayerDTO playerDTO) {

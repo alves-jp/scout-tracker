@@ -44,6 +44,13 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlayerDTO> getPlayersByScoutId(Long scoutId) {
+        return playerRepository.findAll().stream()
+                .filter(player -> player.getScout() != null && player.getScout().getId().equals(scoutId))
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public PlayerDTO updatePlayer(Long id, PlayerDTO dto) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
