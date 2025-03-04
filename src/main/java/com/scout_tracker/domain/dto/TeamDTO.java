@@ -14,7 +14,7 @@ public class TeamDTO {
     private String teamName;
     private String teamState;
     private String teamCity;
-    private String teamCountry;
+    private Long teamCountryId;
     private String teamLeague;
     private List<String> playerNames;
 }

@@ -22,7 +22,11 @@ public class Team {
     private String teamName;
     private String teamState;
     private String teamCity;
-    private String teamCountry;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country teamCountry;
+
     private String teamLeague;
 
     @OneToMany(mappedBy = "playerTeam")
