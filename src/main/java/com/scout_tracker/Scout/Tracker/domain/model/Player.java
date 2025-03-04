@@ -23,6 +23,9 @@ public class Player {
     private String playerName;
     private String playerNickname;
 
+    @Enumerated(EnumType.STRING)
+    private PlayerStatus playerStatus;
+
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate playerBirthday;
 

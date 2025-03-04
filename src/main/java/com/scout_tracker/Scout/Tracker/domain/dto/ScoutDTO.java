@@ -1,0 +1,18 @@
+package com.scout_tracker.Scout.Tracker.domain.dto;
+
+import lombok.*;
+import java.util.List;
+
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScoutDTO {
+
+    private Long id;
+    private String name;
+    private String email;
+    private List<String> playerNames;
+    private List<String> observationDescriptions;
+}

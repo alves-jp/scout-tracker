@@ -6,22 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+public class ScoutObservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String countryName;
-    private String countryContinent;
+    private String observation;
+    private LocalDateTime observationDate;
 
-    @OneToMany(mappedBy = "playerCountry")
-    private List<Player> players;
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    private Player player;
+
+    @ManyToOne
+    @JoinColumn(name = "scout_id")
+    private Scout scout;
+
 }
