@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Component
 public class PlayerMapper {
 
-    public PlayerDTO toDTO(Player player) {
+    public static PlayerDTO toDTO(Player player) {
         PlayerDTO dto = new PlayerDTO();
 
         dto.setId(player.getId());
@@ -26,7 +26,7 @@ public class PlayerMapper {
         return dto;
     }
 
-    public Player toEntity(PlayerDTO dto) {
+    public static Player toEntity(PlayerDTO dto) {
         Player player = new Player();
 
         player.setPlayerName(dto.getPlayerName());
