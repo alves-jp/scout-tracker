@@ -4,8 +4,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    security:
-      enabled: false
+  security:
+    enabled: false
 
   h2:
     console:
