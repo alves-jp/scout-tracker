@@ -1,5 +1,6 @@
 package com.scout_tracker.Scout.Tracker.domain.service;
 
+import com.scout_tracker.Scout.Tracker.domain.exception.ResourceNotFoundException;
 import com.scout_tracker.Scout.Tracker.domain.dto.PlayerDTO;
 import com.scout_tracker.Scout.Tracker.domain.mapper.PlayerMapper;
 import com.scout_tracker.Scout.Tracker.domain.model.Player;
@@ -25,12 +26,36 @@ public class PlayerService {
         return PlayerMapper.toDTO(player);
     }
 
+    public PlayerDTO getPlayerById(Long id) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
+
+        return PlayerMapper.toDTO(player);
+    }
+
     public List<PlayerDTO> getAllPlayers() {
         return playerRepository.findAll().stream()
                 .map(PlayerMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    
+
+    public PlayerDTO updatePlayer(Long id, PlayerDTO dto) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
+
+        player.setPlayerName(dto.getPlayerName());
+        player.setPlayerNickname(dto.getPlayerNickname());
+        player.setPlayerBirthday(LocalDate.parse(dto.getPlayerBirthday()));
+        player.setPlayerAge(dto.getPlayerAge());
+        player.setPlayerHeight(dto.getPlayerHeight());
+        player.setPlayerWeight(dto.getPlayerWeight());
+        player.setPlayerPosition(dto.getPlayerPosition());
+        player.setJerseyNumber(dto.getJerseyNumber());
+        player = playerRepository.save(player);
+
+        return PlayerMapper.toDTO(player);
+    }
+
     public void deletePlayer(Long id) {
         playerRepository.deleteById(id);
     }
