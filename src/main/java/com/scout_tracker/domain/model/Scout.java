@@ -1,0 +1,32 @@
+package com.scout_tracker.domain.model;
+
+import io.micrometer.observation.Observation;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Scout {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String scoutName;
+    private String email;
+
+    @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)
+    private List<Player> players;
+
+    @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)
+    private List<Observation> observations;
+}
+

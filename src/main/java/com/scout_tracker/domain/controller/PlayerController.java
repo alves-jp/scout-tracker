@@ -1,0 +1,45 @@
+package com.scout_tracker.domain.controller;
+
+import com.scout_tracker.domain.dto.PlayerDTO;
+import com.scout_tracker.domain.service.PlayerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/players")
+public class PlayerController {
+
+    @Autowired
+    private PlayerService playerService;
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PlayerDTO savePlayer(@RequestBody PlayerDTO playerDTO) {
+        return playerService.savePlayer(playerDTO);
+    }
+
+    @GetMapping("/{id}")
+    public PlayerDTO getPlayerById(@PathVariable Long id) {
+        return playerService.getPlayerById(id);
+    }
+
+    @GetMapping
+    public List<PlayerDTO> getAllPlayers() {
+        return playerService.getAllPlayers();
+    }
+
+    @PutMapping("/{id}")
+    public PlayerDTO updatePlayer(@PathVariable Long id, @RequestBody PlayerDTO playerDTO) {
+        return playerService.updatePlayer(id, playerDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlayer(@PathVariable Long id) {
+        playerService.deletePlayer(id);
+    }
+}
