@@ -24,7 +24,6 @@ public class PlayerMapper {
 
     public PlayerDTO toDTO(Player player) {
         PlayerDTO dto = new PlayerDTO();
-
         dto.setId(player.getId());
         dto.setPlayerName(player.getPlayerName());
         dto.setPlayerNickname(player.getPlayerNickname());
@@ -37,13 +36,11 @@ public class PlayerMapper {
         dto.setJerseyNumber(player.getJerseyNumber());
         dto.setCountryId(player.getPlayerCountry().getId());
         dto.setTeamId(player.getPlayerTeam().getId());
-
         return dto;
     }
 
     public Player toEntity(PlayerDTO dto) {
         Player player = new Player();
-
         player.setPlayerName(dto.getPlayerName());
         player.setPlayerNickname(dto.getPlayerNickname());
         player.setPlayerStatus(dto.getPlayerStatus());
@@ -56,12 +53,10 @@ public class PlayerMapper {
 
         Country country = countryRepository.findById(dto.getCountryId())
                 .orElseThrow(() -> new RuntimeException("País não encontrado"));
-
         player.setPlayerCountry(country);
 
         Team team = teamRepository.findById(dto.getTeamId())
                 .orElseThrow(() -> new RuntimeException("Clube não encontrado"));
-
         player.setPlayerTeam(team);
 
         return player;

@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class FootballPlayerResponseDTO {
+
     @JsonProperty("player")
     private PlayerResponse player;
 

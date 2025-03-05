@@ -14,7 +14,6 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerDTO savePlayer(@RequestBody PlayerDTO playerDTO) {

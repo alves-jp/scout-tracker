@@ -30,9 +30,9 @@ public class FootballApiClient {
 
     public FootballApiClient(String apiKey) {
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS) // Timeout de conexão
-                .readTimeout(10, TimeUnit.SECONDS)    // Timeout de leitura
-                .writeTimeout(10, TimeUnit.SECONDS)   // Timeout de escrita
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
         this.objectMapper = new ObjectMapper();
     }
@@ -42,6 +42,7 @@ public class FootballApiClient {
             maxAttempts = 3,
             backoff = @Backoff(delay = 1000)
     )
+
     public <T> T getData(String endpoint, Class<T> responseType) throws IOException {
         try {
             String jsonResponse = getData(endpoint);
@@ -62,7 +63,7 @@ public class FootballApiClient {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                if (response.code() == 429) { // Limite de requisições excedido
+                if (response.code() == 429) {
                     throw new ApiRateLimitExceededException("Limite de requisições excedido.");
                 }
                 throw new IOException("Erro na requisição: " + response.code() + " - " + response.message());

@@ -21,7 +21,6 @@ public class ScoutObservationService {
 
     private final RabbitTemplate rabbitTemplate;
 
-
     public ScoutObservationService(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }

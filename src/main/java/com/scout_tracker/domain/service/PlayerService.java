@@ -1,113 +1,109 @@
 package com.scout_tracker.domain.service;
 
-import com.scout_tracker.domain.exception.ResourceNotFoundException;
 import com.scout_tracker.domain.dto.PlayerDTO;
 import com.scout_tracker.domain.mapper.PlayerMapper;
 import com.scout_tracker.domain.model.Player;
 import com.scout_tracker.domain.repository.PlayerRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
-    private final RabbitTemplate rabbitTemplate;
+    private final FootballApiSyncService footballApiSyncService;
 
-    @Autowired
-    public PlayerService(PlayerRepository playerRepository, PlayerMapper playerMapper, RabbitTemplate rabbitTemplate) {
+    public PlayerService(PlayerRepository playerRepository, PlayerMapper playerMapper, FootballApiSyncService footballApiSyncService) {
         this.playerRepository = playerRepository;
         this.playerMapper = playerMapper;
-        this.rabbitTemplate = rabbitTemplate;
+        this.footballApiSyncService = footballApiSyncService;
     }
 
-    public PlayerDTO savePlayer(PlayerDTO dto) {
-        Player player = playerMapper.toEntity(dto);
+    public PlayerDTO savePlayer(PlayerDTO playerDTO) {
+        Player player = playerMapper.toEntity(playerDTO);
         player = playerRepository.save(player);
-
         return playerMapper.toDTO(player);
     }
 
-    @Cacheable(value = "players", key = "#id")
     public PlayerDTO getPlayerById(Long id) {
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
-
-        return playerMapper.toDTO(player);
+        Optional<Player> playerOpt = playerRepository.findById(id);
+        if (playerOpt.isPresent()) {
+            return playerMapper.toDTO(playerOpt.get());
+        } else {
+            throw new RuntimeException("Jogador não encontrado");
+        }
     }
 
     public List<PlayerDTO> getAllPlayers() {
-        return playerRepository.findAll().stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Player> players = playerRepository.findAll();
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
     public List<PlayerDTO> getPlayersByScoutId(Long scoutId) {
-        return playerRepository.findAll().stream()
-                .filter(player -> player.getScout() != null && player.getScout().getId().equals(scoutId))
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Player> players = playerRepository.findByScoutId(scoutId);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
-    public List<PlayerDTO> getPlayersByName(String name) {
-        return playerRepository.findByPlayerNameContainingIgnoreCase(name).stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<PlayerDTO> getPlayersByName(String playerName) {
+        List<Player> players = playerRepository.findByPlayerNameContainingIgnoreCase(playerName);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
-    public List<PlayerDTO> getPlayersByPosition(String position) {
-        return playerRepository.findByPlayerPositionIgnoreCase(position).stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<PlayerDTO> getPlayersByPosition(String playerPosition) {
+        List<Player> players = playerRepository.findByPlayerPositionIgnoreCase(playerPosition);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
     public List<PlayerDTO> getPlayersByAgeRange(int minAge, int maxAge) {
-        return playerRepository.findByPlayerAgeBetween(minAge, maxAge).stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Player> players = playerRepository.findByPlayerAgeBetween(minAge, maxAge);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
     public List<PlayerDTO> getPlayersByTeam(Long teamId) {
-        return playerRepository.findByPlayerTeamId(teamId).stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Player> players = playerRepository.findByPlayerTeamId(teamId);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
     public List<PlayerDTO> getPlayersByCountry(Long countryId) {
-        return playerRepository.findByPlayerCountryId(countryId).stream()
-                .map(playerMapper::toDTO)
-                .collect(Collectors.toList());
+        List<Player> players = playerRepository.findByPlayerCountryId(countryId);
+        return players.stream().map(playerMapper::toDTO).toList();
     }
 
-    public PlayerDTO updatePlayer(Long id, PlayerDTO dto) {
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
+    public PlayerDTO updatePlayer(Long id, PlayerDTO playerDTO) {
+        Optional<Player> playerOpt = playerRepository.findById(id);
+        if (playerOpt.isPresent()) {
+            Player player = playerOpt.get();
+            player.setPlayerName(playerDTO.getPlayerName());
+            player.setPlayerNickname(playerDTO.getPlayerNickname());
+            player.setPlayerStatus(playerDTO.getPlayerStatus());
+            player.setPlayerBirthday(LocalDate.parse(playerDTO.getPlayerBirthday()));
+            player.setPlayerAge(playerDTO.getPlayerAge());
+            player.setPlayerHeight(playerDTO.getPlayerHeight());
+            player.setPlayerWeight(playerDTO.getPlayerWeight());
+            player.setPlayerPosition(playerDTO.getPlayerPosition());
+            player.setJerseyNumber(playerDTO.getJerseyNumber());
 
-        player.setPlayerName(dto.getPlayerName());
-        player.setPlayerNickname(dto.getPlayerNickname());
-        player.setPlayerBirthday(LocalDate.parse(dto.getPlayerBirthday()));
-        player.setPlayerAge(dto.getPlayerAge());
-        player.setPlayerHeight(dto.getPlayerHeight());
-        player.setPlayerWeight(dto.getPlayerWeight());
-        player.setPlayerPosition(dto.getPlayerPosition());
-        player.setJerseyNumber(dto.getJerseyNumber());
-        player = playerRepository.save(player);
-
-        String message = "Jogador atualizado: " + player.getPlayerName() + " (ID: " + player.getId() + ")";
-        rabbitTemplate.convertAndSend("player-events", "player.updated", message);
-
-        return playerMapper.toDTO(player);
+            playerRepository.save(player);
+            return playerMapper.toDTO(player);
+        } else {
+            throw new RuntimeException("Jogador não encontrado");
+        }
     }
 
-    @CacheEvict(value = "players", key = "#id")
     public void deletePlayer(Long id) {
-        playerRepository.deleteById(id);
+        Optional<Player> playerOpt = playerRepository.findById(id);
+        if (playerOpt.isPresent()) {
+            playerRepository.delete(playerOpt.get());
+        } else {
+            throw new RuntimeException("Jogador não encontrado");
+        }
+    }
+
+    public void syncPlayerData(Long playerId) {
+        footballApiSyncService.syncPlayerData(playerId);
     }
 }
