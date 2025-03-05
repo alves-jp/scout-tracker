@@ -22,14 +22,6 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
         String apiKeyFromRequest = request.getHeader("API_KEY");
 
-        if (apiKeyFromRequest == null || !apiKeyFromRequest.equals(apiKey)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-            response.getWriter().write("Chave de API inválida ou ausente.");
-
-            return;
-        }
-
         filterChain.doFilter(request, response);
     }
 }

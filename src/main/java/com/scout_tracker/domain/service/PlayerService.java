@@ -6,6 +6,8 @@ import com.scout_tracker.domain.mapper.PlayerMapper;
 import com.scout_tracker.domain.model.Player;
 import com.scout_tracker.domain.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,6 +33,7 @@ public class PlayerService {
         return playerMapper.toDTO(player);
     }
 
+    @Cacheable(value = "players", key = "#id")
     public PlayerDTO getPlayerById(Long id) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));
@@ -68,6 +71,7 @@ public class PlayerService {
         return playerMapper.toDTO(player);
     }
 
+    @CacheEvict(value = "players", key = "#id")
     public void deletePlayer(Long id) {
         playerRepository.deleteById(id);
     }
