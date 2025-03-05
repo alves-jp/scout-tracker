@@ -28,6 +28,7 @@ public class PlayerMapper {
         dto.setId(player.getId());
         dto.setPlayerName(player.getPlayerName());
         dto.setPlayerNickname(player.getPlayerNickname());
+        dto.setPlayerStatus(player.getPlayerStatus());
         dto.setPlayerBirthday(player.getPlayerBirthday().toString());
         dto.setPlayerAge(player.getPlayerAge());
         dto.setPlayerHeight(player.getPlayerHeight());
@@ -45,6 +46,7 @@ public class PlayerMapper {
 
         player.setPlayerName(dto.getPlayerName());
         player.setPlayerNickname(dto.getPlayerNickname());
+        player.setPlayerStatus(dto.getPlayerStatus());
         player.setPlayerBirthday(LocalDate.parse(dto.getPlayerBirthday()));
         player.setPlayerAge(dto.getPlayerAge());
         player.setPlayerHeight(dto.getPlayerHeight());
