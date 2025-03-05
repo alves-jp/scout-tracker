@@ -1,9 +1,11 @@
 package com.scout_tracker.domain.controller;
 
+import com.scout_tracker.domain.exception.ApiCommunicationException;
+import com.scout_tracker.domain.exception.ApiRateLimitExceededException;
+import com.scout_tracker.domain.exception.ApiTimeoutException;
 import com.scout_tracker.domain.service.FootballApiSyncService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/football")
@@ -20,9 +22,14 @@ public class FootballApiController {
         try {
             footballApiSyncService.syncPlayerData(playerId);
             return ResponseEntity.ok("Jogador sincronizado com sucesso!");
-
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Erro ao sincronizar jogador: " + e.getMessage());
+        } catch (ApiTimeoutException e) {
+            return ResponseEntity.status(408).body("Timeout ao sincronizar jogador: " + e.getMessage());
+        } catch (ApiRateLimitExceededException e) {
+            return ResponseEntity.status(429).body("Limite de requisições excedido: " + e.getMessage());
+        } catch (ApiCommunicationException e) {
+            return ResponseEntity.status(500).body("Erro de comunicação ao sincronizar jogador: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro inesperado ao sincronizar jogador: " + e.getMessage());
         }
     }
 }

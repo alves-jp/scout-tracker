@@ -2,9 +2,13 @@ package com.scout_tracker.domain.service;
 
 import com.scout_tracker.api.FootballApiClient;
 import com.scout_tracker.domain.dto.FootballPlayerResponseDTO;
+import com.scout_tracker.domain.exception.ApiCommunicationException;
+import com.scout_tracker.domain.exception.ApiRateLimitExceededException;
+import com.scout_tracker.domain.exception.ApiTimeoutException;
 import com.scout_tracker.domain.model.Player;
 import com.scout_tracker.domain.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 
 @Service
@@ -19,12 +23,19 @@ public class FootballApiSyncService {
         this.playerRepository = playerRepository;
     }
 
-    public void syncPlayerData(Long playerId) throws IOException {
-        FootballPlayerResponseDTO response = footballApiClient.getData("players?id=" + playerId, FootballPlayerResponseDTO.class);
+    public void syncPlayerData(Long playerId) {
+        try {
+            FootballPlayerResponseDTO response = footballApiClient.getData("players?id=" + playerId, FootballPlayerResponseDTO.class);
 
-        Player player = convertToPlayer(response);
+            Player player = convertToPlayer(response);
+            playerRepository.save(player);
 
-        playerRepository.save(player);
+        } catch (ApiTimeoutException | ApiRateLimitExceededException | ApiCommunicationException e) {
+            throw e;
+
+        } catch (IOException e) {
+            throw new ApiCommunicationException("Erro ao sincronizar dados do jogador: " + e.getMessage());
+        }
     }
 
     private Player convertToPlayer(FootballPlayerResponseDTO response) {
@@ -36,7 +47,7 @@ public class FootballApiSyncService {
         player.setPlayerHeight(Double.parseDouble(response.getPlayer().getHeight()));
         player.setPlayerWeight(Double.parseDouble(response.getPlayer().getWeight()));
         player.setPlayerPosition(response.getPlayer().getPosition());
-
+        
         return player;
     }
 }
