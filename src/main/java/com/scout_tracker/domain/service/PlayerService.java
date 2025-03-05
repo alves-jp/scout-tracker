@@ -54,6 +54,36 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlayerDTO> getPlayersByName(String name) {
+        return playerRepository.findByPlayerNameContainingIgnoreCase(name).stream()
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlayerDTO> getPlayersByPosition(String position) {
+        return playerRepository.findByPlayerPositionIgnoreCase(position).stream()
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlayerDTO> getPlayersByAgeRange(int minAge, int maxAge) {
+        return playerRepository.findByPlayerAgeBetween(minAge, maxAge).stream()
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlayerDTO> getPlayersByTeam(Long teamId) {
+        return playerRepository.findByPlayerTeamId(teamId).stream()
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlayerDTO> getPlayersByCountry(Long countryId) {
+        return playerRepository.findByPlayerCountryId(countryId).stream()
+                .map(playerMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public PlayerDTO updatePlayer(Long id, PlayerDTO dto) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogador não encontrado"));

@@ -5,7 +5,6 @@ import com.scout_tracker.domain.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -38,6 +37,38 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     public List<PlayerDTO> getPlayersByScout(@PathVariable Long scoutId) {
         return playerService.getPlayersByScoutId(scoutId);
+    }
+
+    @GetMapping("/search/name")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByName(@RequestParam String name) {
+        return playerService.getPlayersByName(name);
+    }
+
+    @GetMapping("/search/position")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByPosition(@RequestParam String position) {
+        return playerService.getPlayersByPosition(position);
+    }
+
+    @GetMapping("/search/age-range")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByAgeRange(
+            @RequestParam int minAge,
+            @RequestParam int maxAge) {
+        return playerService.getPlayersByAgeRange(minAge, maxAge);
+    }
+
+    @GetMapping("/search/team")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByTeam(@RequestParam Long teamId) {
+        return playerService.getPlayersByTeam(teamId);
+    }
+
+    @GetMapping("/search/country")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PlayerDTO> getPlayersByCountry(@RequestParam Long countryId) {
+        return playerService.getPlayersByCountry(countryId);
     }
 
     @PutMapping("/{id}")

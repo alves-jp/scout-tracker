@@ -13,6 +13,7 @@ public class FootballApiController {
 
     private final FootballApiSyncService footballApiSyncService;
 
+
     public FootballApiController(FootballApiSyncService footballApiSyncService) {
         this.footballApiSyncService = footballApiSyncService;
     }
@@ -22,14 +23,19 @@ public class FootballApiController {
         try {
             footballApiSyncService.syncPlayerData(playerId);
             return ResponseEntity.ok("Jogador sincronizado com sucesso!");
+
         } catch (ApiTimeoutException e) {
             return ResponseEntity.status(408).body("Timeout ao sincronizar jogador: " + e.getMessage());
+
         } catch (ApiRateLimitExceededException e) {
             return ResponseEntity.status(429).body("Limite de requisições excedido: " + e.getMessage());
+
         } catch (ApiCommunicationException e) {
             return ResponseEntity.status(500).body("Erro de comunicação ao sincronizar jogador: " + e.getMessage());
+
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro inesperado ao sincronizar jogador: " + e.getMessage());
+
         }
     }
 }
