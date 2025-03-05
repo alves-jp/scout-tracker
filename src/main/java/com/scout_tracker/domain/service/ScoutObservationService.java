@@ -5,6 +5,7 @@ import com.scout_tracker.domain.exception.ResourceNotFoundException;
 import com.scout_tracker.domain.mapper.ScoutObservationMapper;
 import com.scout_tracker.domain.model.ScoutObservation;
 import com.scout_tracker.domain.repository.ScoutObservationRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,12 @@ public class ScoutObservationService {
     @Autowired
     private ScoutObservationRepository observationRepository;
 
+    private final RabbitTemplate rabbitTemplate;
+
+
+    public ScoutObservationService(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     public ScoutObservationDTO saveObservation(ScoutObservationDTO dto) {
         ScoutObservation observation = ScoutObservationMapper.toEntity(dto);
@@ -47,6 +54,9 @@ public class ScoutObservationService {
         observation.setObservationDate(LocalDateTime.parse(dto.getObservationDate()));
 
         observation = observationRepository.save(observation);
+
+        String message = "Anotação atualizada: " + observation.getObservation() + " (ID: " + observation.getId() + ")";
+        rabbitTemplate.convertAndSend("observation-events", "observation.updated", message);
 
         return ScoutObservationMapper.toDTO(observation);
     }

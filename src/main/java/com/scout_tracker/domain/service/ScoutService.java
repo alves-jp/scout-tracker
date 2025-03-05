@@ -17,7 +17,6 @@ public class ScoutService {
     @Autowired
     private ScoutRepository scoutRepository;
 
-
     public ScoutDTO saveScout(ScoutDTO dto) {
         Scout scout = ScoutMapper.toEntity(dto);
         scout = scoutRepository.save(scout);
