@@ -24,6 +24,7 @@ public class PlayerMapper {
 
     public PlayerDTO toDTO(Player player) {
         PlayerDTO dto = new PlayerDTO();
+
         dto.setId(player.getId());
         dto.setPlayerName(player.getPlayerName());
         dto.setPlayerNickname(player.getPlayerNickname());
@@ -36,6 +37,7 @@ public class PlayerMapper {
         dto.setJerseyNumber(player.getJerseyNumber());
         dto.setCountryId(player.getPlayerCountry().getId());
         dto.setTeamId(player.getPlayerTeam().getId());
+
         return dto;
     }
 

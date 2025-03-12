@@ -26,13 +26,16 @@ public class PlayerService {
     public PlayerDTO savePlayer(PlayerDTO playerDTO) {
         Player player = playerMapper.toEntity(playerDTO);
         player = playerRepository.save(player);
+
         return playerMapper.toDTO(player);
     }
 
     public PlayerDTO getPlayerById(Long id) {
         Optional<Player> playerOpt = playerRepository.findById(id);
+
         if (playerOpt.isPresent()) {
             return playerMapper.toDTO(playerOpt.get());
+
         } else {
             throw new RuntimeException("Jogador não encontrado");
         }
@@ -75,6 +78,7 @@ public class PlayerService {
 
     public PlayerDTO updatePlayer(Long id, PlayerDTO playerDTO) {
         Optional<Player> playerOpt = playerRepository.findById(id);
+
         if (playerOpt.isPresent()) {
             Player player = playerOpt.get();
             player.setPlayerName(playerDTO.getPlayerName());
@@ -88,7 +92,9 @@ public class PlayerService {
             player.setJerseyNumber(playerDTO.getJerseyNumber());
 
             playerRepository.save(player);
+
             return playerMapper.toDTO(player);
+
         } else {
             throw new RuntimeException("Jogador não encontrado");
         }
@@ -96,8 +102,10 @@ public class PlayerService {
 
     public void deletePlayer(Long id) {
         Optional<Player> playerOpt = playerRepository.findById(id);
+
         if (playerOpt.isPresent()) {
             playerRepository.delete(playerOpt.get());
+
         } else {
             throw new RuntimeException("Jogador não encontrado");
         }

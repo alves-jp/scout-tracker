@@ -31,8 +31,10 @@ public class FootballApiSyncService {
             FootballPlayerResponseDTO response = footballApiClient.getData("players?id=" + playerId, FootballPlayerResponseDTO.class);
             Player player = convertToPlayer(response);
             playerRepository.save(player);
+
         } catch (ApiTimeoutException | ApiRateLimitExceededException | ApiCommunicationException e) {
             throw e;
+
         } catch (IOException e) {
             throw new ApiCommunicationException("Erro ao sincronizar dados do jogador: " + e.getMessage());
         }
@@ -40,12 +42,14 @@ public class FootballApiSyncService {
 
     private Player convertToPlayer(FootballPlayerResponseDTO response) {
         Player player = new Player();
+
         player.setPlayerName(response.getPlayer().getName());
         player.setPlayerNickname(response.getPlayer().getFirstname() + " " + response.getPlayer().getLastname());
         player.setPlayerAge(response.getPlayer().getAge());
         player.setPlayerHeight(Double.parseDouble(response.getPlayer().getHeight()));
         player.setPlayerWeight(Double.parseDouble(response.getPlayer().getWeight()));
         player.setPlayerPosition(response.getPlayer().getPosition());
+
         return player;
     }
 }

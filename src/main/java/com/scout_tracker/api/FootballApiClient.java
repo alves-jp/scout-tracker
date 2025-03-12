@@ -34,6 +34,7 @@ public class FootballApiClient {
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
+
         this.objectMapper = new ObjectMapper();
     }
 
@@ -47,8 +48,10 @@ public class FootballApiClient {
         try {
             String jsonResponse = getData(endpoint);
             return objectMapper.readValue(jsonResponse, responseType);
+
         } catch (IOException e) {
             logger.error("Erro de comunicação com a API externa: {}", e.getMessage());
+
             throw new ApiCommunicationException("Erro de comunicação com a API externa: " + e.getMessage());
         }
     }
@@ -65,10 +68,13 @@ public class FootballApiClient {
             if (!response.isSuccessful()) {
                 if (response.code() == 429) {
                     throw new ApiRateLimitExceededException("Limite de requisições excedido.");
+
                 }
                 throw new IOException("Erro na requisição: " + response.code() + " - " + response.message());
+
             }
             return response.body().string();
+
         } catch (IOException e) {
             logger.error("Erro ao chamar a API externa: {}", e.getMessage());
             throw e;
