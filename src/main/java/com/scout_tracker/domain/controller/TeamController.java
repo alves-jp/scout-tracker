@@ -1,7 +1,7 @@
 package com.scout_tracker.domain.controller;
 
 import com.scout_tracker.domain.dto.TeamDTO;
-import com.scout_tracker.domain.service.TeamService;
+import com.scout_tracker.domain.service.impl.TeamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 public class TeamController {
 
     @Autowired
-    private TeamService teamService;
+    private TeamServiceImpl teamService;
 
 
     @PostMapping

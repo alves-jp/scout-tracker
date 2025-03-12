@@ -6,13 +6,11 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.security.SecureRandom;
-import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
 
-    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -39,10 +37,10 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+        return Jwts.parser()
+                .verifyWith(SECRET_KEY)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

@@ -3,7 +3,7 @@ package com.scout_tracker.domain.controller;
 import com.scout_tracker.domain.exception.ApiCommunicationException;
 import com.scout_tracker.domain.exception.ApiRateLimitExceededException;
 import com.scout_tracker.domain.exception.ApiTimeoutException;
-import com.scout_tracker.domain.service.FootballApiSyncService;
+import com.scout_tracker.domain.service.impl.FootballApiSyncServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/football")
 public class FootballApiController {
 
-    private final FootballApiSyncService footballApiSyncService;
+    private final FootballApiSyncServiceImpl footballApiSyncService;
 
 
-    public FootballApiController(FootballApiSyncService footballApiSyncService) {
+    public FootballApiController(FootballApiSyncServiceImpl footballApiSyncService) {
         this.footballApiSyncService = footballApiSyncService;
     }
 

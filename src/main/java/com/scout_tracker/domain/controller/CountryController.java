@@ -1,7 +1,7 @@
 package com.scout_tracker.domain.controller;
 
 import com.scout_tracker.domain.dto.CountryDTO;
-import com.scout_tracker.domain.service.CountryService;
+import com.scout_tracker.domain.service.impl.CountryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CountryController {
 
     @Autowired
-    private CountryService countryService;
+    private CountryServiceImpl countryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

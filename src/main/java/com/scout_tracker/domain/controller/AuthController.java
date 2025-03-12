@@ -1,56 +1,43 @@
 package com.scout_tracker.domain.controller;
 
-import com.scout_tracker.domain.model.Scout;
-import com.scout_tracker.domain.repository.ScoutRepository;
-import com.scout_tracker.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.scout_tracker.domain.dto.AuthDTO;
+import com.scout_tracker.domain.dto.AuthResponseDTO;
+import com.scout_tracker.domain.dto.ScoutDTO;
+import com.scout_tracker.domain.service.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final JwtUtil jwtUtil;
-    private final ScoutRepository scoutRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
-    @Autowired
-    public AuthController(JwtUtil jwtUtil, ScoutRepository scoutRepository, PasswordEncoder passwordEncoder) {
-        this.jwtUtil = jwtUtil;
-        this.scoutRepository = scoutRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponseDTO> signup(@RequestBody ScoutDTO scoutDTO) {
+        AuthResponseDTO response = authService.registerUser(scoutDTO);
+
+        if ("success".equals(response.getMessage())) {
+            return ResponseEntity.ok(response);
+
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-        System.out.println("Buscando usuário: " + username);
-        Scout user = scoutRepository.findByUsername(username).orElse(null);
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthDTO authDTO) {
+        AuthResponseDTO response = authService.loginUser(authDTO);
 
-        if (user != null) {
-            System.out.println("Usuário encontrado: " + user.getUsername());
+        if ("success".equals(response.getMessage())) {
+            return ResponseEntity.ok(response);
 
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                String token = jwtUtil.generateToken(username);
-
-                return ResponseEntity.ok().body(Map.of(
-                        "token", token,
-                        "message", "Authentication successful"
-                ));
-
-            } else {
-                System.out.println("Senha inválida para o usuário: " + username);
-
-            }
         } else {
-            System.out.println("Usuário não encontrado");
-
+            return ResponseEntity.badRequest().body(response);
         }
-
-        return ResponseEntity.status(401).body(Map.of(
-                "message", "Unauthorized"
-        ));
     }
 }

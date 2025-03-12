@@ -1,7 +1,7 @@
 package com.scout_tracker.domain.controller;
 
 import com.scout_tracker.domain.dto.PlayerDTO;
-import com.scout_tracker.domain.service.PlayerService;
+import com.scout_tracker.domain.service.impl.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 public class PlayerController {
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

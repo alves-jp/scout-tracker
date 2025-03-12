@@ -1,6 +1,7 @@
 package com.scout_tracker.domain.controller;
 
 import com.scout_tracker.domain.dto.ScoutObservationDTO;
+import com.scout_tracker.domain.service.impl.ScoutObservationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ScoutObservationController {
 
     @Autowired
-    private com.scout_tracker.domain.service.ScoutObservationService observationService;
+    private ScoutObservationServiceImpl observationService;
 
 
     @PostMapping
