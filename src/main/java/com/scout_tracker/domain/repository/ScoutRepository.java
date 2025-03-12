@@ -10,7 +10,10 @@ import java.util.Optional;
 public interface ScoutRepository extends JpaRepository<Scout, Long> {
 
     List<Scout> findByScoutNameContainingIgnoreCase(String scoutName);
-    Scout saveUser(Scout scout);
-    Scout findByUsername(String username);
+
+    Scout save(Scout scout);
+
+    Optional<Scout> findByUsername(String username);
+
     Optional<Scout> findById(Long id);
 }
