@@ -11,6 +11,7 @@ public class AppConfig {
     @Bean
     public FootballApiClient footballApiClient() {
         String apiKey = System.getenv("API_KEY");
+
         return new FootballApiClient(apiKey);
     }
 }

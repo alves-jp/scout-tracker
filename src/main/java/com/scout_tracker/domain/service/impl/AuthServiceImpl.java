@@ -26,7 +26,6 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(ScoutServiceImpl scoutService, PasswordEncoder passwordEncoder,
                            AuthenticationManager authenticationManager,
                            JwtUtil jwtUtil) {
-
         this.scoutService = scoutService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;

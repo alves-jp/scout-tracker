@@ -10,8 +10,8 @@ public class Config {
 
         if (apiKey == null || apiKey.trim().isEmpty()) {
             throw new IllegalStateException("Chave de API não encontrada no arquivo .env.");
-
         }
+
         return apiKey;
     }
 }
