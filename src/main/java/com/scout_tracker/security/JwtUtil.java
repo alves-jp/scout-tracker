@@ -9,28 +9,19 @@ import java.util.Map;
 import java.security.SecureRandom;
 import io.jsonwebtoken.security.Keys;
 
-import static javax.crypto.Cipher.SECRET_KEY;
-
 @Component
 public class JwtUtil {
 
-    private SecretKey generateSecretKey() {
-        byte[] keyBytes = new byte[32];
-        new SecureRandom().nextBytes(keyBytes);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
-        SecretKey secretKey = generateSecretKey();
-
         Map<String, Object> claims = new HashMap<>();
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SECRET_KEY)
                 .compact();
     }
 
@@ -48,8 +39,9 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(String.valueOf(SECRET_KEY))
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
