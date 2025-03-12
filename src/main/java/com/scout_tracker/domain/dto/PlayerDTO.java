@@ -1,6 +1,6 @@
 package com.scout_tracker.domain.dto;
 
-import com.scout_tracker.domain.model.PlayerStatus;
+import com.scout_tracker.domain.model.enums.PlayerStatus;
 import lombok.*;
 
 @Data

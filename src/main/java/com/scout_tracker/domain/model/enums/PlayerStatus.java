@@ -1,4 +1,4 @@
-package com.scout_tracker.domain.model;
+package com.scout_tracker.domain.model.enums;
 
 public enum PlayerStatus {
 

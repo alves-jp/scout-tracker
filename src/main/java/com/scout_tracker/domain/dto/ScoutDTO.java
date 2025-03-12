@@ -1,6 +1,6 @@
 package com.scout_tracker.domain.dto;
 
-import com.scout_tracker.domain.model.Role;
+import com.scout_tracker.domain.model.enums.Role;
 import lombok.*;
 import java.util.List;
 

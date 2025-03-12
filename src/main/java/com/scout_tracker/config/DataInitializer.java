@@ -1,6 +1,6 @@
 package com.scout_tracker.config;
 
-import com.scout_tracker.domain.model.Role;
+import com.scout_tracker.domain.model.enums.Role;
 import com.scout_tracker.domain.model.Scout;
 import com.scout_tracker.domain.repository.ScoutRepository;
 import org.springframework.boot.CommandLineRunner;

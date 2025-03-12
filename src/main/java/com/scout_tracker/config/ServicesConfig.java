@@ -8,10 +8,6 @@ import software.amazon.awssdk.services.ses.SesClient;
 public interface ServicesConfig {
     public String getRegion();
 
-    public S3Client s3Client();
-
-    public String getImageBucketName();
-
     public String getNotificationSenderEmail();
 
     public SesClient sesClient();

@@ -1,5 +1,6 @@
 package com.scout_tracker.domain.model;
 
+import com.scout_tracker.domain.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
