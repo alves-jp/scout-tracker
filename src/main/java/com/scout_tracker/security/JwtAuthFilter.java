@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter{
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -37,14 +37,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
 
             try {
-
                 username = jwtUtil.extractUsername(token);
+
             } catch (ExpiredJwtException e) {
-
                 System.out.println("JWT Token expirou");
-            } catch (Exception e) {
 
+            } catch (Exception e) {
                 System.out.println("Erro ao extrair nome do usuário do JWT Token");
+
             }
         } else {
             System.out.println("JWT Token não começa com a String Bearer");
