@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Scout user = scoutRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
-        
+
         return new User(user.getScoutName(), passwordEncoder.encode(user.getPassword()), Collections.singletonList(authority));
     }
 }

@@ -1,5 +1,6 @@
 package com.scout_tracker.security;
 
+import com.scout_tracker.domain.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,39 +37,33 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
 
             try {
-                // Extract the username from the token
+
                 username = jwtUtil.extractUsername(token);
             } catch (ExpiredJwtException e) {
-                // Handle expired token exception
-                System.out.println("JWT Token has expired");
+
+                System.out.println("JWT Token expirou");
             } catch (Exception e) {
-                // Handle other exceptions
-                System.out.println("Error extracting username from JWT Token");
+
+                System.out.println("Erro ao extrair nome do usuário do JWT Token");
             }
         } else {
-            System.out.println("JWT Token does not begin with Bearer String");
+            System.out.println("JWT Token não começa com a String Bearer");
         }
 
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Load user details from the database
             var userDetails = userDetailsService.loadUserByUsername(username);
 
-            // Validate the token
             if (jwtUtil.validateToken(token, userDetails.getUsername())) {
-                // Create an authentication token
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                // Set additional details
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Set the authentication in the context
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
 
-        // Continue the filter chain
         filterChain.doFilter(request, response);
     }
 }
