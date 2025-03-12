@@ -20,6 +20,7 @@ public class Scout {
     private Long id;
 
     private String scoutName;
+    private String username;
     private String email;
     private String password;
 
