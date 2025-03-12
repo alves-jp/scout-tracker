@@ -29,6 +29,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .csrf(csrf -> csrf.disable())

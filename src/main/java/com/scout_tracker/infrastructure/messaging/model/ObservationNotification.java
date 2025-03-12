@@ -1,4 +1,4 @@
-package com.scout_tracker.infrastructure.model;
+package com.scout_tracker.infrastructure.messaging.model;
 
 import com.scout_tracker.domain.dto.ScoutDTO;
 import com.scout_tracker.domain.dto.ScoutObservationDTO;

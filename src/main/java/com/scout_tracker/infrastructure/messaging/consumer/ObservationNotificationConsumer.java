@@ -1,7 +1,7 @@
 package com.scout_tracker.infrastructure.messaging.consumer;
 
 import com.scout_tracker.infrastructure.aws.SESSService;
-import com.scout_tracker.infrastructure.model.ObservationNotification;
+import com.scout_tracker.infrastructure.messaging.model.ObservationNotification;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
 public class ObservationNotificationConsumer {

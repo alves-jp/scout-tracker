@@ -2,7 +2,7 @@ package com.scout_tracker.infrastructure.messaging.producer;
 
 import com.scout_tracker.domain.dto.ScoutDTO;
 import com.scout_tracker.domain.dto.ScoutObservationDTO;
-import com.scout_tracker.infrastructure.model.ObservationNotification;
+import com.scout_tracker.infrastructure.messaging.model.ObservationNotification;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
