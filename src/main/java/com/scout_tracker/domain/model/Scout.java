@@ -21,10 +21,14 @@ public class Scout {
 
     private String scoutName;
     private String email;
+    private String password;
 
     @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)
     private List<Player> players;
 
     @OneToMany(mappedBy = "scout", cascade = CascadeType.ALL)
     private List<ScoutObservation> observations;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
