@@ -16,14 +16,16 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     private String apiKey;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("Chave de API no header: " + request.getHeader("API_KEY"));
-        System.out.println("Chave de API do .env: " + apiKey);
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String apiKeyFromRequest = request.getHeader("API_KEY");
+
+        if (apiKeyFromRequest == null || !apiKeyFromRequest.equals(apiKey)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("ERRO: Chave API inválida ou inexistente.");
+            return;
+        }
 
         filterChain.doFilter(request, response);
     }
 }
-
-

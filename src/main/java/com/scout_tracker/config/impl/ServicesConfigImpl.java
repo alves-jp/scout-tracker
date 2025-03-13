@@ -15,18 +15,6 @@ public class ServicesConfigImpl implements ServicesConfig {
     }
 
     @Override
-    public S3Client s3Client() {
-        return S3Client.builder()
-                .region(Region.of(getRegion()))
-                .build();
-    }
-
-    @Override
-    public String getImageBucketName() {
-        return "my-image-bucket";
-    }
-
-    @Override
     public String getNotificationSenderEmail() {
         return "no-reply@example.com";
     }
